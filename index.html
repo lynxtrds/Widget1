@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Ejemplo Widget con Efecto de Escribir/Borrar</title>
+  <title>Widget - Typewriter Effect</title>
   <style>
-    /* Estilos de página */
     body {
       margin: 0;
       padding: 0;
-      background: linear-gradient(180deg, #000 0%, #1c1c1c 100%);
+      background: #1c1c1c;
       font-family: Arial, sans-serif;
       color: #fff;
       display: flex;
@@ -16,59 +15,45 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
-    }
-    
-    /* Contenedor principal */
-    .container {
       text-align: center;
-      max-width: 600px;
+    }
+    .container {
+      max-width: 800px;
       padding: 20px;
     }
-
-    /* Título principal */
     .title {
       font-size: 2rem;
-      margin: 0 0 10px 0;
+      margin-bottom: 10px;
     }
-
-    /* Subtítulo */
     .subtitle {
-      font-size: 1rem;
-      margin: 0 0 20px 0;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
       color: #ccc;
     }
-
-    /* Contenedor del input (o área de texto animado) */
     .typewriter-container {
       position: relative;
       display: inline-block;
-      border: 1px solid #444;
-      border-radius: 6px;
-      padding: 10px 15px;
+      border: 2px solid #444;
+      border-radius: 15px; /* Esquinas moldeadas a 15px */
+      padding: 20px 25px;
       background-color: #1c1c1c;
+      min-width: 500px;  /* Recuadro más grande */
+      min-height: 120px; /* Recuadro más grande */
     }
-
-    /* Texto donde se escribe y borra */
     .typewriter-text {
-      font-size: 1rem;
-      outline: none;
-      border: none;
-      background: transparent;
+      font-size: 1.1rem;
       color: #fff;
-      min-width: 280px;
+      min-height: 40px; /* Reserva de espacio para el texto */
     }
-
-    /* Cursor parpadeante */
     .cursor {
       display: inline-block;
       width: 2px;
-      height: 1em;
+      height: 1.1em;
       background-color: #fff;
       margin-left: 2px;
       animation: blink 0.7s infinite;
       vertical-align: bottom;
     }
-
     @keyframes blink {
       0%, 50% { opacity: 1; }
       51%, 100% { opacity: 0; }
@@ -77,79 +62,58 @@
 </head>
 <body>
   <div class="container">
-    <!-- Título -->
-    <h1 class="title">Idea to app in seconds.</h1>
-    <!-- Subtítulo -->
-    <p class="subtitle">Lovable is your superhuman full stack engineer.</p>
-
-    <!-- Contenedor del área de “input” animado -->
+    <!-- Nuevo Título y Subtítulo -->
+    <h1 class="title">How Much is Your Mind Costing You? Find Out Now</h1>
+    <p class="subtitle">Unlock Your Emotional ROI in Just 1 Minute.</p>
+    <!-- Contenedor del área de texto animado -->
     <div class="typewriter-container">
-      <!-- Texto animado -->
       <span class="typewriter-text" id="typewriter"></span>
-      <!-- Cursor -->
       <span class="cursor"></span>
     </div>
   </div>
-
+  
   <script>
-    // Frases a mostrar (puedes personalizarlas)
+    // Frases a rotar
     const phrases = [
-      "ask Lovable to create a web app that...",
-      "ask Lovable to build a chatbot for you...",
-      "ask Lovable to design your next big idea...",
-      "ask Lovable to code a startup MVP..."
+      "How often do emotions influence your financial decisions?",
+      "How much have you lost to emotional decisions in the past 6 months?",
+      "How much time do you spend analyzing your emotions weekly?",
+      "How confident are you in your financial decisions?"
     ];
-
-    // Elemento donde se escribe
+    
     const typewriterSpan = document.getElementById("typewriter");
-
-    let phraseIndex = 0;   // Índice de la frase actual
-    let charIndex = 0;     // Índice del carácter actual
+    let phraseIndex = 0;
+    let charIndex = 0;
     let currentPhrase = "";
-    let isDeleting = false; // Indica si estamos borrando
-
-    // Velocidad de escritura y borrado (ms)
-    const typingSpeed = 100;  
-    const erasingSpeed = 70;  
-    // Pausa al terminar de escribir una frase y antes de borrarla
-    const newPhraseDelay = 1500; 
-
+    let isDeleting = false;
+    
+    const typingSpeed = 100;  // Velocidad de escritura
+    const erasingSpeed = 70;  // Velocidad de borrado
+    const newPhraseDelay = 1500;  // Pausa al terminar la frase
+    
     function type() {
-      // Obtener la frase actual
       currentPhrase = phrases[phraseIndex];
-
+      
       if (!isDeleting) {
         // Escribiendo
-        typewriterSpan.textContent = currentPhrase.slice(0, charIndex + 1);
+        typewriterSpan.textContent = currentPhrase.substring(0, charIndex + 1);
         charIndex++;
-
-        // ¿Llegamos al final de la frase?
         if (charIndex === currentPhrase.length) {
-          // Esperar un tiempo y luego empezar a borrar
+          // Pausa antes de borrar
           setTimeout(() => { isDeleting = true; }, newPhraseDelay);
         }
       } else {
         // Borrando
-        typewriterSpan.textContent = currentPhrase.slice(0, charIndex - 1);
+        typewriterSpan.textContent = currentPhrase.substring(0, charIndex - 1);
         charIndex--;
-
-        // ¿Terminamos de borrar la frase?
         if (charIndex === 0) {
           isDeleting = false;
-          // Pasar a la siguiente frase
           phraseIndex = (phraseIndex + 1) % phrases.length;
         }
       }
-
-      // Calcular el tiempo hasta el siguiente carácter
+      
       const currentSpeed = isDeleting ? erasingSpeed : typingSpeed;
       setTimeout(type, currentSpeed);
     }
-
-    // Iniciar la animación
-    document.addEventListener("DOMContentLoaded", () => {
-      setTimeout(type, 500);
-    });
-  </script>
-</body>
-</html>
+    
+    do
