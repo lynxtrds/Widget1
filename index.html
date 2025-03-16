@@ -2,62 +2,60 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>TradeAware Widget</title>
+  <title>How Much is Your Mind Costing You? Find Out Now</title>
   <!-- Fuente Inter (opcional) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap">
-
   <style>
-    /* Estilos generales de la página (puedes integrarlos a tu hoja de estilos principal) */
+    /* Fondo blanco, texto negro */
     body {
+      background-color: #F7F7F7;
+      font-family: 'Inter', sans-serif;
+      color: #2E2E2E;
       margin: 0;
-      padding: 0;
-      font-family: 'Inter', sans-serif, Arial, sans-serif;
-      background-color: #f9f9f9; /* color claro de fondo para contraste */
+      padding: 20px;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
       min-height: 100vh;
+      text-align: center;
     }
 
-    /* Contenedor general del widget */
-    .widget-container {
-      text-align: center;
+    /* Contenedor principal (para centrar el contenido) */
+    .container {
       max-width: 800px;
       width: 100%;
-      padding: 20px;
-      /* Puedes quitar este margin-top si lo incrustas dentro de otra sección de tu página */
-      margin-top: 40px; 
+      margin: 0 auto;
     }
 
     /* Título y subtítulo */
     .title {
-      font-size: 2rem;
-      color: #000;
-      margin-bottom: 30px; /* Espacio generoso entre título y subtítulo */
+      font-size: 2rem; /* ~32px */
+      margin-bottom: 20px;
     }
     .subtitle {
-      font-size: 1.2rem;
+      font-size: 1.2rem; /* ~19px */
       color: #444;
-      margin-bottom: 50px; /* Más espacio antes del recuadro */
+      margin-bottom: 40px;
     }
 
-    /* Contenedor oscuro con el efecto de escribir/borrar */
+    /* Sección con fondo oscuro para el efecto typewriter */
     .typewriter-section {
       position: relative;
       display: inline-block;
-      background-color: #1c1c1c;
+      background-color: #1c1c1c; /* Recuadro oscuro */
+      border: 2px solid #444;
       border-radius: 15px;
+      padding: 30px;
       min-width: 600px;
       min-height: 160px;
-      padding: 30px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2); /* Sombra sutil */
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     }
 
-    /* Texto animado */
+    /* Texto donde se escribe y borra */
     .typewriter-text {
       font-size: 1.1rem;
-      color: #F7F7F7; 
+      color: #F7F7F7; /* Letras claras sobre fondo oscuro */
       outline: none;
     }
 
@@ -76,7 +74,7 @@
       51%, 100% { opacity: 0; }
     }
 
-    /* Botón "Send" en la esquina inferior derecha */
+    /* Botón "Send" en la esquina inferior derecha del recuadro */
     .action-button {
       position: absolute;
       bottom: 15px;
@@ -97,12 +95,12 @@
   </style>
 </head>
 <body>
-  <div class="widget-container">
-    <!-- Título y subtítulo con más espacio -->
+  <div class="container">
+    <!-- Título y subtítulo -->
     <h1 class="title">How Much is Your Mind Costing You? Find Out Now</h1>
     <p class="subtitle">Unlock Your Emotional ROI in Just 1 Minute.</p>
 
-    <!-- Sección que contiene el efecto de escribir y el botón "Send" -->
+    <!-- Recuadro oscuro con el efecto de escribir/borrar -->
     <div class="typewriter-section">
       <div id="typewriter" class="typewriter-text" contentEditable="true"></div>
       <span class="cursor"></span>
@@ -111,7 +109,7 @@
   </div>
 
   <script>
-    // Frases (preguntas) a rotar
+    // Frases a rotar
     const phrases = [
       "How often do emotions influence your financial decisions?",
       "How much have you lost to emotional decisions in the past 6 months?",
@@ -125,28 +123,27 @@
     let isDeleting = false;
     let timeoutId;
 
-    // Velocidades de escritura/borrado (más rápidas)
+    // Velocidades de escritura y borrado
     const typingSpeed = 50;    // ms entre letras al escribir
     const deletingSpeed = 20;  // ms entre letras al borrar
-    const pauseDelay = 1000;   // ms de pausa tras escribir la frase completa
+    const pauseDelay = 1000;   // pausa al terminar una frase
 
     function type() {
-      // Si el usuario está escribiendo (foco en el div), no animar
+      // Si el usuario hace foco en el campo editable, detiene la animación
       if (document.activeElement === typewriterEl) return;
 
       const currentPhrase = phrases[phraseIndex];
 
       if (!isDeleting) {
-        // Escribe letra a letra
+        // Escribiendo
         typewriterEl.textContent = currentPhrase.substring(0, charIndex + 1);
         charIndex++;
         if (charIndex === currentPhrase.length) {
-          // Pausa antes de borrar
           timeoutId = setTimeout(() => { isDeleting = true; type(); }, pauseDelay);
           return;
         }
       } else {
-        // Borra letra a letra
+        // Borrando
         typewriterEl.textContent = currentPhrase.substring(0, charIndex - 1);
         charIndex--;
         if (charIndex === 0) {
@@ -159,17 +156,17 @@
       timeoutId = setTimeout(type, delay);
     }
 
-    // Inicia la animación medio segundo después de cargar
+    // Iniciar la animación al cargar
     document.addEventListener("DOMContentLoaded", () => {
       setTimeout(type, 500);
     });
 
-    // Detener la animación al hacer foco (para que el usuario pueda escribir)
+    // Detener animación al enfocar
     typewriterEl.addEventListener("focus", () => {
       clearTimeout(timeoutId);
     });
 
-    // Al perder el foco, se borra y se inicia la siguiente frase
+    // Al perder el foco, se borra y pasa a la siguiente frase
     typewriterEl.addEventListener("blur", () => {
       typewriterEl.textContent = "";
       charIndex = 0;
@@ -179,9 +176,8 @@
     });
 
     // Acción del botón "Send"
-    const actionButton = document.getElementById("actionButton");
-    actionButton.addEventListener("click", () => {
-      alert("Button clicked! (aquí puedes disparar tu lógica)");
+    document.getElementById("actionButton").addEventListener("click", () => {
+      alert("Button clicked! Implement your functionality here.");
     });
   </script>
 </body>
