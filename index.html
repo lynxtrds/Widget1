@@ -2,71 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Responsive TradeAware Widget</title>
-  <!-- Fuente Inter (opcional) -->
+  <title>How Much is Your Mind Costing You? Find Out Now</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap">
-
   <style>
-    /* Reset y estilos base */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    /* Estilos base para Desktop */
     body {
-      font-family: 'Inter', Arial, sans-serif;
-      background-color: #f9f9f9;
-      color: #333;
+      background-color: #1c1c1c;
+      font-family: 'Inter', sans-serif;
+      color: #fff;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      min-height: 100vh;
+      justify-content: center;
+      margin: 0;
+      padding: 20px;
+      height: 100vh;
       text-align: center;
     }
-
-    /* Contenedor general del widget */
-    .widget-container {
-      width: 100%;
-      max-width: 800px; /* Máximo en escritorio */
-      margin: 20px auto;
+    .container {
+      max-width: 800px;
       padding: 20px;
     }
-
-    /* Título y subtítulo */
     .title {
-      font-size: 2rem;
-      color: #000;
+      font-size: 2rem; /* Aproximadamente 32px si base es 16px */
       margin-bottom: 30px;
     }
     .subtitle {
-      font-size: 1.2rem;
-      color: #444;
+      font-size: 1.2rem; /* Aproximadamente 19px */
       margin-bottom: 50px;
+      color: #ccc;
     }
-
-    /* Recipiente para el efecto typewriter */
     .typewriter-section {
       position: relative;
-      width: 100%;
-      max-width: 600px;      /* Máximo ancho en Desktop */
-      margin: 0 auto;        /* Centrar */
+      display: inline-block;
       background-color: #1c1c1c;
+      border: 2px solid #444;
       border-radius: 15px;
       padding: 30px;
+      min-width: 600px;
       min-height: 160px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     }
-
-    /* Texto animado */
     .typewriter-text {
       font-size: 1.1rem;
       color: #F7F7F7;
       outline: none;
-      display: inline-block; /* Para que el cursor se alinee bien */
     }
-
-    /* Cursor parpadeante */
     .cursor {
       display: inline-block;
       width: 2px;
@@ -80,8 +62,6 @@
       0%, 50% { opacity: 1; }
       51%, 100% { opacity: 0; }
     }
-
-    /* Botón "Send" en la esquina inferior derecha */
     .action-button {
       position: absolute;
       bottom: 15px;
@@ -99,46 +79,34 @@
     .action-button:hover {
       background-color: #e2e2e2;
     }
-
-    /* ========================
-       MEDIA QUERIES
-    =========================*/
-
-    /* Tablet (por ejemplo 768px a 1024px). Ajusta si necesitas otro rango */
-    @media (max-width: 1024px) and (min-width: 768px) {
+    
+    /* Tablet */
+    @media (min-width: 768px) and (max-width: 1024px) {
       .title {
-        font-size: 1.8rem;
+        font-size: 35px;
       }
       .subtitle {
-        font-size: 1.1rem;
-        margin-bottom: 40px;
+        font-size: 17px;
       }
       .typewriter-section {
-        max-width: 500px; /* Un poco menos ancho en tablet */
+        max-width: 500px;
+        min-height: 140px;
         padding: 25px;
       }
-      .typewriter-text {
-        font-size: 1rem;
-      }
     }
-
-    /* Mobile (por ejemplo, <768px) */
+    
+    /* Mobile */
     @media (max-width: 767px) {
       .title {
-        font-size: 1.5rem;
-        margin-bottom: 20px;
+        font-size: 20px;
       }
       .subtitle {
-        font-size: 1rem;
-        margin-bottom: 30px;
+        font-size: 15px;
       }
       .typewriter-section {
         max-width: 90%;
         padding: 20px;
-        min-height: 140px;
-      }
-      .typewriter-text {
-        font-size: 0.95rem;
+        min-height: 120px;
       }
       .action-button {
         font-size: 0.8rem;
@@ -148,42 +116,41 @@
   </style>
 </head>
 <body>
-  <div class="widget-container">
+  <div class="container">
     <h1 class="title">How Much is Your Mind Costing You? Find Out Now</h1>
     <p class="subtitle">Unlock Your Emotional ROI in Just 1 Minute.</p>
-
     <div class="typewriter-section">
       <div id="typewriter" class="typewriter-text" contentEditable="true"></div>
       <span class="cursor"></span>
       <button id="actionButton" class="action-button">Send</button>
     </div>
   </div>
-
+  
   <script>
-    // Frases a rotar
+    // Frases a rotar (las preguntas)
     const phrases = [
       "How often do emotions influence your financial decisions?",
       "How much have you lost to emotional decisions in the past 6 months?",
       "How much time do you spend analyzing your emotions weekly?",
       "How confident are you in your financial decisions?"
     ];
-
+    
+    const typewriterEl = document.getElementById("typewriter");
     let phraseIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
     let timeoutId;
-
-    const typewriterEl = document.getElementById("typewriter");
-    const typingSpeed = 50;
-    const deletingSpeed = 20;
-    const pauseDelay = 1000;
-
+    
+    const typingSpeed = 50;    // ms entre letras al escribir
+    const deletingSpeed = 20;  // ms entre letras al borrar
+    const pauseDelay = 1000;   // ms de pausa al terminar una frase
+    
     function type() {
-      // Si el usuario tiene el foco, no animar
+      // Si el usuario tiene el foco, se detiene la animación
       if (document.activeElement === typewriterEl) return;
-
+      
       const currentPhrase = phrases[phraseIndex];
-
+      
       if (!isDeleting) {
         typewriterEl.textContent = currentPhrase.substring(0, charIndex + 1);
         charIndex++;
@@ -199,20 +166,19 @@
           phraseIndex = (phraseIndex + 1) % phrases.length;
         }
       }
+      
       const delay = isDeleting ? deletingSpeed : typingSpeed;
       timeoutId = setTimeout(type, delay);
     }
-
-    // Iniciar la animación
+    
     document.addEventListener("DOMContentLoaded", () => {
       setTimeout(type, 500);
     });
-
-    // Enfocar => parar animación
+    
     typewriterEl.addEventListener("focus", () => {
       clearTimeout(timeoutId);
     });
-    // Perder foco => reiniciar animación
+    
     typewriterEl.addEventListener("blur", () => {
       typewriterEl.textContent = "";
       charIndex = 0;
@@ -220,11 +186,10 @@
       phraseIndex = (phraseIndex + 1) % phrases.length;
       setTimeout(type, 500);
     });
-
-    // Botón "Send"
+    
     const actionButton = document.getElementById("actionButton");
     actionButton.addEventListener("click", () => {
-      alert("Button clicked! You can handle form submission here.");
+      alert("Button clicked! Implement your functionality here.");
     });
   </script>
 </body>
