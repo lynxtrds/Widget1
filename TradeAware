@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ejemplo Widget con Efecto de Escribir/Borrar</title>
+  <style>
+    /* Estilos de página */
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(180deg, #000 0%, #1c1c1c 100%);
+      font-family: Arial, sans-serif;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    
+    /* Contenedor principal */
+    .container {
+      text-align: center;
+      max-width: 600px;
+      padding: 20px;
+    }
+
+    /* Título principal */
+    .title {
+      font-size: 2rem;
+      margin: 0 0 10px 0;
+    }
+
+    /* Subtítulo */
+    .subtitle {
+      font-size: 1rem;
+      margin: 0 0 20px 0;
+      color: #ccc;
+    }
+
+    /* Contenedor del input (o área de texto animado) */
+    .typewriter-container {
+      position: relative;
+      display: inline-block;
+      border: 1px solid #444;
+      border-radius: 6px;
+      padding: 10px 15px;
+      background-color: #1c1c1c;
+    }
+
+    /* Texto donde se escribe y borra */
+    .typewriter-text {
+      font-size: 1rem;
+      outline: none;
+      border: none;
+      background: transparent;
+      color: #fff;
+      min-width: 280px;
+    }
+
+    /* Cursor parpadeante */
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background-color: #fff;
+      margin-left: 2px;
+      animation: blink 0.7s infinite;
+      vertical-align: bottom;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Título -->
+    <h1 class="title">Idea to app in seconds.</h1>
+    <!-- Subtítulo -->
+    <p class="subtitle">Lovable is your superhuman full stack engineer.</p>
+
+    <!-- Contenedor del área de “input” animado -->
+    <div class="typewriter-container">
+      <!-- Texto animado -->
+      <span class="typewriter-text" id="typewriter"></span>
+      <!-- Cursor -->
+      <span class="cursor"></span>
+    </div>
+  </div>
+
+  <script>
+    // Frases a mostrar (puedes personalizarlas)
+    const phrases = [
+      "ask Lovable to create a web app that...",
+      "ask Lovable to build a chatbot for you...",
+      "ask Lovable to design your next big idea...",
+      "ask Lovable to code a startup MVP..."
+    ];
+
+    // Elemento donde se escribe
+    const typewriterSpan = document.getElementById("typewriter");
+
+    let phraseIndex = 0;   // Índice de la frase actual
+    let charIndex = 0;     // Índice del carácter actual
+    let currentPhrase = "";
+    let isDeleting = false; // Indica si estamos borrando
+
+    // Velocidad de escritura y borrado (ms)
+    const typingSpeed = 100;  
+    const erasingSpeed = 70;  
+    // Pausa al terminar de escribir una frase y antes de borrarla
+    const newPhraseDelay = 1500; 
+
+    function type() {
+      // Obtener la frase actual
+      currentPhrase = phrases[phraseIndex];
+
+      if (!isDeleting) {
+        // Escribiendo
+        typewriterSpan.textContent = currentPhrase.slice(0, charIndex + 1);
+        charIndex++;
+
+        // ¿Llegamos al final de la frase?
+        if (charIndex === currentPhrase.length) {
+          // Esperar un tiempo y luego empezar a borrar
+          setTimeout(() => { isDeleting = true; }, newPhraseDelay);
+        }
+      } else {
+        // Borrando
+        typewriterSpan.textContent = currentPhrase.slice(0, charIndex - 1);
+        charIndex--;
+
+        // ¿Terminamos de borrar la frase?
+        if (charIndex === 0) {
+          isDeleting = false;
+          // Pasar a la siguiente frase
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+        }
+      }
+
+      // Calcular el tiempo hasta el siguiente carácter
+      const currentSpeed = isDeleting ? erasingSpeed : typingSpeed;
+      setTimeout(type, currentSpeed);
+    }
+
+    // Iniciar la animación
+    document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(type, 500);
+    });
+  </script>
+</body>
+</html>
