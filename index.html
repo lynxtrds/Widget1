@@ -7,27 +7,26 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap">
   <style>
-    /* Fondo blanco, texto negro */
-    body {
-      background-color: #F7F7F7;
+    /* Fijar tamaño de la página sin scrollbars */
+    html, body {
+      width: 950px;
+      height: 484px;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #F7F7F7; /* Fondo blanco */
       font-family: 'Inter', sans-serif;
       color: #2E2E2E;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      text-align: center;
     }
-
-    /* Contenedor principal (para centrar el contenido) */
+    /* Contenedor principal */
     .container {
-      max-width: 800px;
-      width: 100%;
+      width: 950px;
+      height: 484px;
+      box-sizing: border-box;
+      padding: 20px;
+      text-align: center;
       margin: 0 auto;
     }
-
     /* Título y subtítulo */
     .title {
       font-size: 2rem; /* ~32px */
@@ -36,29 +35,28 @@
     .subtitle {
       font-size: 1.2rem; /* ~19px */
       color: #444;
-      margin-bottom: 40px;
+      margin-bottom: 30px;
     }
-
-    /* Recuadro oscuro con el efecto typewriter */
+    /* Recuadro para el widget */
     .typewriter-section {
       position: relative;
       display: inline-block;
-      background-color: #1c1c1c; /* Recuadro oscuro */
+      background-color: #1c1c1c; /* Fondo oscuro para el widget */
       border: 2px solid #444;
       border-radius: 15px;
       padding: 30px;
-      min-width: 600px;
+      width: 600px; /* Fijo para este widget */
       min-height: 160px;
+      margin: 0 auto;
       box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     }
-
-    /* Texto donde se escribe y borra */
+    /* Texto del widget */
     .typewriter-text {
       font-size: 1.1rem;
-      color: #F7F7F7; /* Letras claras sobre fondo oscuro */
+      color: #F7F7F7;
       outline: none;
+      text-align: center;
     }
-
     /* Botón "Send" en la esquina inferior derecha del recuadro */
     .action-button {
       position: absolute;
@@ -84,54 +82,45 @@
     <!-- Título y subtítulo -->
     <h1 class="title">How Much is Your Mind Costing You? Find Out Now</h1>
     <p class="subtitle">Unlock Your Emotional ROI in Just 1 Minute.</p>
-
-    <!-- Recuadro oscuro con el efecto de escribir/borrar -->
+    <!-- Recuadro con el efecto typewriter -->
     <div class="typewriter-section">
       <div id="typewriter" class="typewriter-text" contentEditable="true"></div>
-      <!-- Cursor eliminado -->
       <button id="actionButton" class="action-button">Send</button>
     </div>
   </div>
-
+  
   <script>
-    // Frases a rotar
+    // Array de frases a rotar
     const phrases = [
       "How often do emotions influence your financial decisions?",
       "How much have you lost to emotional decisions in the past 6 months?",
       "How much time do you spend analyzing your emotions weekly?",
       "How confident are you in your financial decisions?"
     ];
-
     const typewriterEl = document.getElementById("typewriter");
     let phraseIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
     let timeoutId;
-
-    // Velocidades de escritura y borrado
-    const typingSpeed = 50;    // ms entre letras al escribir
-    const deletingSpeed = 20;  // ms entre letras al borrar
+    
+    const typingSpeed = 50;    // ms entre cada letra al escribir
+    const deletingSpeed = 20;  // ms entre cada letra al borrar
     const pauseDelay = 1000;   // pausa al terminar una frase
-
+    
     function type() {
-      // Si el usuario hace foco en el campo editable, detiene la animación
+      // Si el usuario tiene el foco en el campo editable, detiene la animación
       if (document.activeElement === typewriterEl) return;
-
+      
       const currentPhrase = phrases[phraseIndex];
-
+      
       if (!isDeleting) {
-        // Escribiendo
         typewriterEl.textContent = currentPhrase.substring(0, charIndex + 1);
         charIndex++;
         if (charIndex === currentPhrase.length) {
-          timeoutId = setTimeout(() => {
-            isDeleting = true;
-            type();
-          }, pauseDelay);
+          timeoutId = setTimeout(() => { isDeleting = true; type(); }, pauseDelay);
           return;
         }
       } else {
-        // Borrando
         typewriterEl.textContent = currentPhrase.substring(0, charIndex - 1);
         charIndex--;
         if (charIndex === 0) {
@@ -139,22 +128,15 @@
           phraseIndex = (phraseIndex + 1) % phrases.length;
         }
       }
-
       const delay = isDeleting ? deletingSpeed : typingSpeed;
       timeoutId = setTimeout(type, delay);
     }
-
-    // Iniciar la animación al cargar
+    
     document.addEventListener("DOMContentLoaded", () => {
       setTimeout(type, 500);
     });
-
-    // Detener animación al enfocar
-    typewriterEl.addEventListener("focus", () => {
-      clearTimeout(timeoutId);
-    });
-
-    // Al perder el foco, se borra y pasa a la siguiente frase
+    
+    typewriterEl.addEventListener("focus", () => { clearTimeout(timeoutId); });
     typewriterEl.addEventListener("blur", () => {
       typewriterEl.textContent = "";
       charIndex = 0;
@@ -162,8 +144,7 @@
       phraseIndex = (phraseIndex + 1) % phrases.length;
       setTimeout(type, 500);
     });
-
-    // Acción del botón "Send"
+    
     document.getElementById("actionButton").addEventListener("click", () => {
       alert("Button clicked! Implement your functionality here.");
     });
