@@ -39,7 +39,7 @@
       margin-bottom: 40px;
     }
 
-    /* Sección con fondo oscuro para el efecto typewriter */
+    /* Recuadro oscuro con el efecto typewriter */
     .typewriter-section {
       position: relative;
       display: inline-block;
@@ -57,21 +57,6 @@
       font-size: 1.1rem;
       color: #F7F7F7; /* Letras claras sobre fondo oscuro */
       outline: none;
-    }
-
-    /* Cursor parpadeante */
-    .cursor {
-      display: inline-block;
-      width: 2px;
-      height: 1.1em;
-      background-color: #F7F7F7;
-      margin-left: 2px;
-      animation: blink 0.7s infinite;
-      vertical-align: bottom;
-    }
-    @keyframes blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
     }
 
     /* Botón "Send" en la esquina inferior derecha del recuadro */
@@ -103,7 +88,7 @@
     <!-- Recuadro oscuro con el efecto de escribir/borrar -->
     <div class="typewriter-section">
       <div id="typewriter" class="typewriter-text" contentEditable="true"></div>
-      <span class="cursor"></span>
+      <!-- Cursor eliminado -->
       <button id="actionButton" class="action-button">Send</button>
     </div>
   </div>
@@ -139,7 +124,10 @@
         typewriterEl.textContent = currentPhrase.substring(0, charIndex + 1);
         charIndex++;
         if (charIndex === currentPhrase.length) {
-          timeoutId = setTimeout(() => { isDeleting = true; type(); }, pauseDelay);
+          timeoutId = setTimeout(() => {
+            isDeleting = true;
+            type();
+          }, pauseDelay);
           return;
         }
       } else {
