@@ -17,15 +17,21 @@
       background-color: #F7F7F7; /* Fondo blanco */
       font-family: 'Inter', sans-serif;
       color: #2E2E2E;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-    /* Contenedor principal */
+    /* Contenedor principal centrado */
     .container {
       width: 950px;
       height: 484px;
       box-sizing: border-box;
       padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      margin: 0 auto;
     }
     /* Título y subtítulo */
     .title {
@@ -35,7 +41,7 @@
     .subtitle {
       font-size: 1.2rem; /* ~19px */
       color: #444;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
     }
     /* Recuadro para el widget */
     .typewriter-section {
@@ -47,7 +53,6 @@
       padding: 30px;
       width: 600px; /* Fijo para este widget */
       min-height: 160px;
-      margin: 0 auto;
       box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     }
     /* Texto del widget */
@@ -79,7 +84,7 @@
 </head>
 <body>
   <div class="container">
-    <!-- Título y subtítulo -->
+    <!-- Título y subtítulo centrados -->
     <h1 class="title">How Much is Your Mind Costing You? Find Out Now</h1>
     <p class="subtitle">Unlock Your Emotional ROI in Just 1 Minute.</p>
     <!-- Recuadro con el efecto typewriter -->
@@ -137,6 +142,7 @@
     });
     
     typewriterEl.addEventListener("focus", () => { clearTimeout(timeoutId); });
+    
     typewriterEl.addEventListener("blur", () => {
       typewriterEl.textContent = "";
       charIndex = 0;
